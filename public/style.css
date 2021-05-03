@@ -1,0 +1,8 @@
+body{
+    padding-top: 10rem;
+    padding-bottom: 8rem;
+    background:  url(./images/bg-callout.jpeg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

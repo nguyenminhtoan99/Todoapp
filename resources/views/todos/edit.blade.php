@@ -13,6 +13,7 @@
                     <button class="btn btn-success" type="submit" id="button-addon2">EDIT</button>
                 </div>
             </div>
+            <span class="error-message text text-danger">{{ $errors->first('title') }}</span>
         </form>
     </div>
 </div>

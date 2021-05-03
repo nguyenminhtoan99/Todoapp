@@ -2,23 +2,24 @@
 
 @section('content')
 
-    {{-- <div class="container-fluid bg-primary"> --}}
+
         <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-            <div class="text-center">
+            <div class="text-center border mt-5 p-2 shadow-lg">
                 <h1 class="display-2 ">Todo App</h1>
                 <form action="{{route('todos.create')}}" method="POST">
                     @csrf
                     <div class="input-group mb-3 w-100">
-                        <input name="title" type="text" class="form-control" placeholder="Enter todo" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <input name="title" value="{{old('title')}}" type="text" class="form-control" placeholder="Enter todo" aria-label="Recipient's username" aria-describedby="button-addon2">
                         <div class="input-group-append">
                             <button class="btn btn-success" type="submit" id="button-addon2">ADD</button>
                         </div>
                     </div>
+                    <span class="error-message text text-danger">{{ $errors->first('title') }}</span>
                 </form>
                 <h2 class=" pt-2">My todo list</h2>
                 <div class="bg-white w-100 ">
                     @forelse ($todos as $todo)
-                    <div class="w-100 d-flex align-items-center justify-content-between bg-info">
+                    <div class="w-100 d-flex align-items-center justify-content-between border mb-1">
                         <div class="p-4">
                             @if ($todo->completed==0)
                             <i class="fa fa-chevron-right"></i>
@@ -28,7 +29,8 @@
                             {{ $todo->title }}</div>
 
                         <div class="mr-4 d-flex align-items-center">
-                            @if ($todo->completed==0)
+                            <input type="checkbox" class="published" data-id="{{$todo->id}}" @if ($todo->completed!=0) checked @endif>
+                            {{-- @if ($todo->completed==0)
                             <form action="{{route('todos.update', $todo->id)}}" method="POST">
                                 @csrf
                                 <input type="text" name="completed" value="1" hidden>
@@ -40,7 +42,7 @@
                                 <input type="text" name="completed" value="0" hidden>
                                 <button class="btn btn-warning" >Mark it as uncompleted</button>
                             </form>
-                            @endif
+                            @endif --}}
                             <a class="ml-2 text-warning" href="{{route('todos.edit', $todo->id)}}"><i class="fa fa-edit"></i></a>
                             <a onclick="return confirm('Are you sure you want to delete this item?');" class="ml-2 text-warning" href="{{route('todos.destroy', $todo->id)}}"><i class="fa fa-trash"></i></a>
                         </div>
@@ -48,12 +50,13 @@
                     @empty
                     <p>Nothing todo</p>
                     @endforelse
-
                 </div>
+                <div class="h6 mt-3">{{ $todos->links() }}</div>
+
             </div>
 
         </div>
-    {{-- </div> --}}
+
 
 
 @endsection

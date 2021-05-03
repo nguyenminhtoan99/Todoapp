@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -12,7 +14,10 @@ class UsersController extends Controller
         return view('users.login');
     }
 
-    public function register(Request $request){
+    public function showregister(){
+        return view('users.register');
+    }
+    public function register(RegisterRequest $request){
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -21,20 +26,18 @@ class UsersController extends Controller
         return redirect()->route('user.index');
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $email = $request->email;
 		$password = $request->password;
 		if( Auth::attempt(['email' => $email, 'password' =>$password])) {
-			// Kiểm tra đúng email và mật khẩu sẽ chuyển trang
 			return redirect()->route('todos.index');
 		} else {
-			// Kiểm tra không đúng sẽ hiển thị thông báo lỗi
-
-			return back();
+            session()->flash('error', 'Email or password is incorrect!');
+            return back()->withInput();
 		}
     }
-    public function getLogout()
+    public function logout()
     {
         Auth::logout();
         return redirect()->route('home');

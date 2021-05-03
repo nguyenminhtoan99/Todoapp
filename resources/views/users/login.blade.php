@@ -8,44 +8,32 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
-<body>
+<body class="bg-primary">
     <div class="container">
-        <div class="row mt-5">
-            <div class="col-md-5">
-                <form method="POST" action="{{route('user.login')}}">
-                    @csrf
-                    <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input name="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-7 border-0 mb-1 shadow-lg bg-white rounded my-5">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">Login</h1>
+                    </div>
+                    <form method="POST" action="{{route('user.login')}}">
+                        @csrf
+                        <div class="mb-3">
+                          <input value="{{old('email')}}" name="email" type="email" class="form-control rounded-pill p-4"  aria-describedby="emailHelp" placeholder="Enter email address">
+                          <span class="error-message text text-danger">{{ $errors->first('email') }}</span>
+                        </div>
+                        <div class="mb-3">
+                          <input value="{{old('password')}}" name="password" type="password" class="form-control rounded-pill p-4" placeholder="Password">
+                          <span class="error-message text text-danger">{{ $errors->first('password') }}</span>
+                          <span class="error-message text text-danger">{{ session()->get('error') }}</span>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block rounded-pill">Login</button>
+                      </form>
+                      <div class="text-center">
+                        <a class="small" href="{{route('user.show')}}">Create an Account!</a>
+                    </div>
+                </div>
 
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                      <input name="password" type="password" class="form-control" id="exampleInputPassword1">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                  </form>
-            </div>
-            <div class="col-md-2 text-center">OR</div>
-            <div class="col-md-5">
-                <form method="POST" action="{{route('user.register')}}">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Name</label>
-                        <input name="name" type="text" class="form-control">
-
-                      </div>
-                    <div class="mb-3">
-                      <label for="exampleInputEmail1" class="form-label">Email address</label>
-                      <input name="email" type="email" class="form-control">
-
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleInputPassword1" class="form-label">Password</label>
-                      <input name="password" type="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Register</button>
-                  </form>
             </div>
         </div>
     </div>

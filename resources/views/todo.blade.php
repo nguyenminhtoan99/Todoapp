@@ -11,6 +11,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
+            <a class="text-warning" href="{{route('user.logout')}}">Logout</a>
             @yield('content')
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TodoRequest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class TodosController extends Controller
      */
     public function index()
     {
-        $todos=Todo::where(['user_id'=>Auth::user()->id])->get();
+        $todos=Todo::where(['user_id'=>Auth::user()->id])->simplePaginate(5);
         return view('todos.index', compact('todos'));
     }
 
@@ -35,7 +36,7 @@ class TodosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TodoRequest $request)
     {
         $user = Auth::user();
         $todo= Todo::create([
@@ -75,7 +76,7 @@ class TodosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TodoRequest $request, $id)
     {
         $todo = Todo::findOrFail($id);
         $todo->update($request->all());
@@ -92,5 +93,14 @@ class TodosController extends Controller
     {
          Todo::find($id)->delete();
          return redirect()->route('todos.index');
+    }
+
+    public function changeStatus($id)
+    {
+        $todo = Todo::findOrFail($id);
+        $todo->completed = !$todo->completed;
+        $todo->save();
+
+        return response()->json($todo);
     }
 }
