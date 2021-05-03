@@ -9,5 +9,15 @@ class Todo extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['description','user_id'];
+    protected $fillable = ['title','completed','user_id'];
+
+    // public function todos()
+    // {
+    // return $this->belongsToMany('App\Models\User','todo_user',  'todo_id','user_id',);
+    // }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

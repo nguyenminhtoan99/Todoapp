@@ -40,4 +40,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    // public function todos()
+    // {
+    // return $this->belongsToMany('App\Models\Todo','todo_user', 'user_id', 'todo_id');
+    // }
+    public function todos()
+    {
+        return $this->belongsToMany(Todo::class);
+    }
 }

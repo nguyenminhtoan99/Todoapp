@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 class TodosController extends Controller
 {
     /**
@@ -14,8 +15,7 @@ class TodosController extends Controller
      */
     public function index()
     {
-        $todos = Todo::all();
-        // dd($todos);
+        $todos=Todo::where(['user_id'=>Auth::user()->id])->get();
         return view('todos.index', compact('todos'));
     }
 
@@ -37,9 +37,12 @@ class TodosController extends Controller
      */
     public function store(Request $request)
     {
-        $data  = $request->all();
-        // $data['user_id']= random_int(1,99);
-        $todo= Todo::create($data);
+        $user = Auth::user();
+        $todo= Todo::create([
+            'title' => $request->title,
+            'user_id' => $user->id,
+            'completed' => 0,
+        ]);
         return back();
     }
 
@@ -51,7 +54,6 @@ class TodosController extends Controller
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -62,7 +64,8 @@ class TodosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $todo=Todo::findOrFail($id);
+        return view('todos.edit', compact('todo'));
     }
 
     /**
@@ -74,8 +77,9 @@ class TodosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $article = Article::findOrFail($id);
-        // $article->update($request->all());
+        $todo = Todo::findOrFail($id);
+        $todo->update($request->all());
+        return redirect()->route('todos.index');
     }
 
     /**
@@ -87,6 +91,6 @@ class TodosController extends Controller
     public function destroy($id)
     {
          Todo::find($id)->delete();
-         return back();
+         return redirect()->route('todos.index');
     }
 }
