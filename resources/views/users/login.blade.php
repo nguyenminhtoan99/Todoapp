@@ -16,6 +16,17 @@
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">Login</h1>
                     </div>
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                                {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                     <form method="POST" action="{{route('user.login')}}">
                         @csrf
                         <div class="mb-3">

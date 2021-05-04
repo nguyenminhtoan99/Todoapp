@@ -23,6 +23,7 @@ class UsersController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
+        session()->flash('success', 'register successful!');
         return redirect()->route('user.index');
     }
 
