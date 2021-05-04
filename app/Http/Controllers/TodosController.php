@@ -95,12 +95,4 @@ class TodosController extends Controller
          return redirect()->route('todos.index');
     }
 
-    public function changeStatus($id)
-    {
-        $todo = Todo::findOrFail($id);
-        $todo->completed = !$todo->completed;
-        $todo->save();
-
-        return response()->json($todo);
-    }
 }

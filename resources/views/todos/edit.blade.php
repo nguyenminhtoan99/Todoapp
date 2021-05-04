@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-    <div class="text-center">
+    <div class="text-center border mt-5 p-2 shadow-lg">
         <h1 class="display-2 ">Edit todo</h1>
         <form action="{{route('todos.update', $todo->id)}}" method="POST">
             @csrf
