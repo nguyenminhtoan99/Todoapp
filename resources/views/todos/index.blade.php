@@ -6,6 +6,17 @@
         <div class="w-100 h-100 d-flex justify-content-center align-items-center">
             <div class="text-center border mt-5 p-2 shadow-lg">
                 <h1 class="display-2 ">Todo App</h1>
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <form action="{{route('todos.create')}}" method="POST">
                     @csrf
                     <div class="input-group mb-3 w-100">

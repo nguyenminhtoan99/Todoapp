@@ -44,6 +44,7 @@ class TodosController extends Controller
             'user_id' => $user->id,
             'completed' => 0,
         ]);
+        session()->flash('success', 'created successful!');
         return back();
     }
 
@@ -80,6 +81,7 @@ class TodosController extends Controller
     {
         $todo = Todo::findOrFail($id);
         $todo->update($request->all());
+        session()->flash('success', 'updated successful!');
         return redirect()->route('todos.index');
     }
 
@@ -91,7 +93,8 @@ class TodosController extends Controller
      */
     public function destroy($id)
     {
-         Todo::find($id)->delete();
+         Todo::findOrFail($id)->delete();
+         session()->flash('success', 'deleted successful!');
          return redirect()->route('todos.index');
     }
 
