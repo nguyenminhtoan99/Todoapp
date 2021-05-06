@@ -14,7 +14,12 @@
         <div class="container text-center my-auto">
             <h1 class="mb-1">Richard Branson</h1>
             <h3 class="mb-5"><em>“Remember the to-do list but don’t forget the to-be list.”</em></h3>
+            @if (Auth::check())
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="{{route('todos.index')}}">Todo list</a>
+            @else
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="{{route('user.index')}}">Please login</a>
+            @endif
+
         </div>
 
 

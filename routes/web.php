@@ -26,9 +26,12 @@ Route::post('/register', [UsersController::class, 'register'])->name('user.regis
 Route::post('/login', [UsersController::class, 'login'])->name('user.login');
 Route::get('/logout', [UsersController::class, 'logout'])->name('user.logout');
 
-Route::get('/todos', [TodosController::class, 'index'])->name('todos.index');
-Route::post('/todos', [TodosController::class, 'store'])->name('todos.create');
-// Route::get('/todos/show/{id}', [TodosController::class, 'show'])->name('todos.show');
-Route::get('/todos/edit/{id}', [TodosController::class, 'edit'])->name('todos.edit');
-Route::post('/todos/update/{id}', [TodosController::class, 'update'])->name('todos.update');
-Route::get('/destroy/{id}', [TodosController::class, 'destroy'])->name('todos.destroy');
+
+Route::group(['middleware' => 'login'], function () {
+    Route::get('/todos', [TodosController::class, 'index'])->name('todos.index');
+    Route::post('/todos', [TodosController::class, 'store'])->name('todos.create');
+    Route::get('/todos/edit/{id}', [TodosController::class, 'edit'])->name('todos.edit');
+    Route::post('/todos/update/{id}', [TodosController::class, 'update'])->name('todos.update');
+    Route::get('/destroy/{id}', [TodosController::class, 'destroy'])->name('todos.destroy');
+
+});

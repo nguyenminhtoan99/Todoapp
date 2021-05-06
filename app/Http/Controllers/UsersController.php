@@ -32,6 +32,7 @@ class UsersController extends Controller
         $email = $request->email;
 		$password = $request->password;
 		if( Auth::attempt(['email' => $email, 'password' =>$password])) {
+            $request->session()->put('login', $request->email);
 			return redirect()->route('todos.index');
 		} else {
             session()->flash('error', 'Email or password is incorrect!');
@@ -41,6 +42,7 @@ class UsersController extends Controller
     public function logout()
     {
         Auth::logout();
+        session()->forget('login');
         return redirect()->route('home');
     }
 }
