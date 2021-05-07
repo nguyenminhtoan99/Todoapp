@@ -4,11 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TodoRequest;
 use App\Models\Todo;
-use Illuminate\Http\Request;
+use App\Repositories\todo\TodoRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+
 class TodosController extends Controller
 {
+    protected $TodoRepo;
+
+    public function __construct(TodoRepositoryInterface $todoRepo)
+    {
+        $this->todoRepo = $todoRepo;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +23,8 @@ class TodosController extends Controller
      */
     public function index()
     {
-        $todos=Todo::where(['user_id'=>Auth::user()->id])->simplePaginate(5);
+        $todos = $this->todoRepo->getTodo();
+        // $todos=Todo::where(['user_id'=>Auth::user()->id])->simplePaginate(5);
         return view('todos.index', compact('todos'));
     }
 
@@ -33,17 +41,12 @@ class TodosController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(TodoRequest $request)
     {
-        $user = Auth::user();
-        $todo= Todo::create([
-            'title' => $request->title,
-            'user_id' => $user->id,
-            'completed' => 0,
-        ]);
+        $todos = $this->todoRepo->storeTodo($request);
         session()->flash('success', 'created successful!');
         return back();
     }
@@ -51,7 +54,7 @@ class TodosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -61,20 +64,20 @@ class TodosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $todo=Todo::findOrFail($id);
+        $todo = Todo::findOrFail($id);
         return view('todos.edit', compact('todo'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(TodoRequest $request, $id)
@@ -88,14 +91,14 @@ class TodosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-         Todo::findOrFail($id)->delete();
-         session()->flash('success', 'deleted successful!');
-         return redirect()->route('todos.index');
+        Todo::findOrFail($id)->delete();
+        session()->flash('success', 'deleted successful!');
+        return redirect()->route('todos.index');
     }
 
 }
